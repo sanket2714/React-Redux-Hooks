@@ -5,37 +5,49 @@ import Person from './Person/Person.js';
 class App extends Component {
   state={
     persons: [
-    {name: "Max", age:28},
-    {name:"Manu", age:29},
-    {name:"steffan", age:26}
+    {id:'asdafvac', name: "Max", age:28},
+    {id:'afghfbeeg',name:"Manu", age:29},
+    {id:'aaaaaaaaagf',name:"steffan", age:26}
     ],
     showpersons: false
   }
 
-  switchnameHandler=(newName)=>{
-    //console.log("Was clicked!!!");
-    //DON'T DO THIS: this.state.persons[0].name="Maximilian";
-    this.setState(
-      {
-        persons: [
-          {name: newName, age:28},
-          {name:"Manu", age:29},
-          {name:"steffan", age:26}
-          ]
-      }
-    )
-  }
+  // switchnameHandler=(newName)=>{
+  //   //console.log("Was clicked!!!");
+  //   //DON'T DO THIS: this.state.persons[0].name="Maximilian";
+  //   this.setState(
+  //     {
+  //       persons: [
+  //         {name: newName, age:28},
+  //         {name:"Manu", age:29},
+  //         {name:"steffan", age:26}
+  //         ]
+  //     }
+  //   )
+  // }
 
-  changeNameHandler=(event)=>{
+  changeNameHandler=(event,id)=>{
     //console.log("Was clicked!!!");
     //DON'T DO THIS: this.state.persons[0].name="Maximilian";
+    const personInd=this.state.persons.findIndex(p=>{
+      return p.id === id;
+    });
+    
+    const person= {
+      ...this.state.persons[personInd]
+    };
+
+    person.name = event.target.value;
+    const persons=[...this.state.persons]
+    persons[personInd] =person;
     this.setState(
       {
-        persons: [
-          {name: "Max", age:28},
-          {name: event.target.value , age:29},
-          {name:"steffan", age:26}
-          ]
+        persons: persons
+          // [
+          // {name: "Max", age:28},
+          // {name: event.target.value , age:29},
+          // {name:"steffan", age:26}
+          // ]
       }
     )
   }
@@ -43,6 +55,14 @@ class App extends Component {
     const doesShow = this.state.showpersons;
     this.setState({showpersons: !doesShow});
   }
+
+  deletePersonhandler =(personIndex)=>{
+    //const pers = this.state.persons.slice(); //we should make a copy of array so that orignal array might not be affected by using slice()
+    //or by using spread operator -> es6 feature 
+    const pers=[...this.state.persons] //we should update state in an immutable fashion
+    pers.splice(personIndex,1);
+    this.setState({persons:pers})
+  } 
 
   render(){
 
@@ -58,7 +78,18 @@ class App extends Component {
     if(this.state.showpersons){
       per=(
         <div>
-        <Person 
+
+      {/* by below feature we can output a list by mapping an array into an array of jsx elements*/}
+          {this.state.persons.map((person,index)=>{
+              return <Person 
+              click={()=>this.deletePersonhandler(index)}
+              name={person.name}
+              age={person.age}
+              key={person.id}
+              changed={(event)=>this.changeNameHandler(event,person.id)}
+              />
+          })}
+        {/* <Person 
         name={this.state.persons[0].name} 
         age={this.state.persons[0].age}/>
         <Person 
@@ -68,7 +99,7 @@ class App extends Component {
         changed={this.changeNameHandler}>My Hobbie: Racing</Person>
         <Person 
         name={this.state.persons[2].name} 
-        age={this.state.persons[2].age}/>
+        age={this.state.persons[2].age}/> */}
       </div> 
       ) ; 
     }
