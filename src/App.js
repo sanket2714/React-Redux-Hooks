@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import './App.css';
+import classes from'./App.css';
 import Person from './Person/Person.js';
 
 class App extends Component {
@@ -66,14 +66,15 @@ class App extends Component {
 
   render(){
 
-    const style={
-      backgroundColor: 'yellow',
-      font: 'inherit',
-      border: '1px solid blue',
-      cursor: 'pointer',
-      padding: '8px'
-    }
-    
+    // const style={
+    //   backgroundColor: 'green',
+    //   color:'white',
+    //   font: 'inherit',
+    //   border: '1px solid blue',
+    //   cursor: 'pointer',
+    //   padding: '8px'
+    // }
+    let btncls='';
     let per =null;
     if(this.state.showpersons){
       per=(
@@ -102,14 +103,21 @@ class App extends Component {
         age={this.state.persons[2].age}/> */}
       </div> 
       ) ; 
+      btncls=classes.red;
     }
-
+    const assignedClasses = [];
+    if(this.state.persons.length <=2){
+      assignedClasses.push(classes.red);
+    }
+    if(this.state.persons.length<=1){
+      assignedClasses.push(classes.bold);
+    }
     return (
-    <div className="App">
+    <div className={classes.App}>
       <h1>This is my first app</h1>
-      <p>Hope it will go well</p>
+      <p className={assignedClasses.join(' ')}>Hope it will go well</p>
       <button 
-      style={style}
+      className={btncls}
       onClick={this.togglePersonsHandler}>Toggle Persons</button>
       {per}
     </div>
