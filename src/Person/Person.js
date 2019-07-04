@@ -1,8 +1,8 @@
 import React from 'react';
-import './Person.css';
+import Pclasses from './Person.css';
 const person= (props)=>{
     return (
-        <div className="Person">
+        <div className={Pclasses.Person}>
             <p onClick={props.click}>My name is {props.name} and i am {props.age} years old</p>
             <p>{props.children}</p>
             <input type="text" onChange={props.changed}/>
@@ -11,5 +11,4 @@ const person= (props)=>{
         
         )
 }
-
 export default person;
